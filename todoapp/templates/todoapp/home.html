@@ -1,0 +1,36 @@
+{% extends 'todoapp/base.html' %}
+{% block content %}
+{% if todos|length >= 2%}
+    <form method="post" action="{% url 'home' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Clear All ToDos</button>
+    </form>
+{% elif todos|length == 0 %}
+    <p>No ToDos are availble.Start by adding new todo.</p>
+{% endif %}
+    {% for todo in todos %}
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <h5 class="mr-2">{{ todo.task }}</h5>
+                    <p class="mr-2">{{ todo.details }}</p>
+                    <span class="mr-2">{{ todo.get_status_display }}</span>
+                    <br>
+                    <small class="text-muted">{{ todo.date|date:"F d, Y"}}</small>
+                </div>
+               
+                <div>
+                    
+                    <a href="{% url 'todo-update' todo.pk %}" class="btn btn-primary">Edit</a>
+                    <a href="{% url 'todo-delete' todo.pk %}" class="btn btn-danger">Delete</a>
+                </div>
+                
+            </div>
+
+        </article>
+       
+    {% endfor %}
+    <br>
+    <br>
+    
+{% endblock content %}
